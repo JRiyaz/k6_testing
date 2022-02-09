@@ -5,7 +5,7 @@ services:
     container_name: grafana_local
     restart: always
     ports:
-      - '3000:3000'
+      - '3030:3000'
     networks:
       - grafana_network
     volumes:
@@ -16,7 +16,7 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=Admin
   influxdb:
-    image: influxdb:1.8.5
+    image: influxdb:1.8
     container_name: influxdb_local
     restart: always
     ports:
