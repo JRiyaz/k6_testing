@@ -23,6 +23,7 @@ services:
       - '8086:8086'
     networks:
       - grafana_network
+      - chronograf_network
     volumes:
       - influxdb_data:/var/lib/influxdb
     environment:
@@ -35,7 +36,7 @@ services:
     ports:
       - '127.0.0.1:8888:8888'
     networks:
-      - grafana_network
+      - chronograf_network
     volumes:
       - chronograf_data:/var/lib/chronograf
     depends_on:
@@ -47,6 +48,7 @@ services:
 
 networks:
   grafana_network:
+  chronograf_network:
 volumes:
   grafana_data:
   influxdb_data:

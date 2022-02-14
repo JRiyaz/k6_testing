@@ -1,6 +1,6 @@
 import http from "k6/http";
 import { check, group } from "k6";
-import { randomItem } from "https://jslib.k6.io/k6-utils/1.1.0/index.js";
+// import { randomItem } from "https://jslib.k6.io/k6-utils/1.1.0/index.js";
 
 export const options = {
   vus: 100,
@@ -13,12 +13,11 @@ export const options = {
   },
 };
 
-// const usernames = ["zeadmin", "Riyaz", "Jiva"];
 
 const BASE_URL = "http://172.17.176.1:5000/";
 const LETTERS_URL = `${BASE_URL}letters/api/`;
-// const credentials = { username: randomItem(usernames), password: "Jiva@123" };
 const credentials = { username: "zeadmin", password: "Jiva@123" };
+// const credentials = { username: randomItem(usernames), password: "Jiva@123" };
 
 export function setup() {
   const loginRes = http.post(`${BASE_URL}auth`, JSON.stringify(credentials), {
@@ -38,7 +37,7 @@ export default (authToken) => {
     },
   };
 
-  const res = http.get(`${LETTERS_URL}get_languages`, bearer_token);
+  const res = http.get(`${LETTERS_URL}getActStatus`, bearer_token);
   // console.log('Response time was ' + String(res.timings.duration) + ' ms');
 
   // group("visit product listing page", function () {
