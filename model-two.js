@@ -1,6 +1,6 @@
 import { sleep } from "k6";
 import http from "k6/http";
-import { randomItem } from "https://jslib.k6.io/k6-utils/1.1.0/index.js";
+import { randomItem, randomIntBetween } from "https://jslib.k6.io/k6-utils/1.1.0/index.js";
 
 // const BASE_URL = "http://172.27.1.137:5001/";// Server
 const BASE_URL = "http://172.17.176.1:5001/";
@@ -52,15 +52,15 @@ export default (authToken) => {
         ["GET", `${LETTERS_URL}getDecisions?enc_type_cd=${randomItem(episode_types)}`, null, bearer_token],
         ["GET", `${LETTERS_URL}getEncTypes`, null, bearer_token],
         ["GET", `${LETTERS_URL}getFaxTypes`, null, bearer_token],
-        ["GET", `${LETTERS_URL}getGroupName?query=${randomItem(query)}&max_results=${randomItem(max_results)}`, null, bearer_token],
+        ["GET", `${LETTERS_URL}getGroupName?query=${randomItem(query)}&max_results=${randomIntBetween(1, 10)}`, null, bearer_token],
         ["GET", `${LETTERS_URL}getLanguages`, null, bearer_token],
         ["GET", `${LETTERS_URL}getNoResultMsg`, null, bearer_token],
         ["GET", `${LETTERS_URL}getProgramCodes?enc_type_cd=${randomItem(episode_types)}`, null, bearer_token],
         ["GET", `${LETTERS_URL}getStateCodes`, null, bearer_token],
         ["GET", `${LETTERS_URL}getTemplateSearchResults?currentPage=${randomItem(current_page)}&isAll=${randomItem(is_all)}`, null, bearer_token],
         ["GET", `${LETTERS_URL}getTemplateTypes`, null, bearer_token],
-        ["GET", `${LETTERS_URL}templateMasterSearch?query=${randomItem(query)}&max_results=${randomItem(max_results)}`, null, bearer_token],
-        ["GET", `${LETTERS_URL}templateSearch?query=${randomItem(query)}&max_results=${randomItem(max_results)}`, null, bearer_token],
+        ["GET", `${LETTERS_URL}templateMasterSearch?query=${randomItem(query)}&max_results=${randomIntBetween(1, 10)}`, null, bearer_token],
+        ["GET", `${LETTERS_URL}templateSearch?query=${randomItem(query)}&max_results=${randomIntBetween(1, 10)}`, null, bearer_token],
     ]);
 
     check(responses[2], {

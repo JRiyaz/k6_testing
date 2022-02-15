@@ -1,9 +1,9 @@
-import { sleep } from "k6";
+import { sleep, group } from "k6";
 import http from "k6/http";
-import { randomItem, randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
+import { randomItem, randomIntBetween, randomString } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
 
 // const BASE_URL = "http://172.27.1.137:5001/";// Server
-const BASE_URL = "http://172.17.176.1:5001/";
+const BASE_URL = "http://172.31.128.1:5001/";
 const LETTERS_URL = `${BASE_URL}letters/api/`;
 const CREDENTIALS = { username: "zeadmin", password: "Jiva@123" };
 
@@ -23,16 +23,18 @@ const letter_types = ['NOTE', 'OUTREACH_SCRIPT', 'MEMBER_LETTER', 'LETTER', 'EMM
 const query = ['test', 'sample', '20 decision', 'letter'];
 const current_page = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const is_all = ['Y', 'N'];
-const notice_idns = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
-const payor_names = ['best', 'internal', 'test', 'ama', 'abc']
-const keyword_idns = [7, 8, 38, 56, 57, 5000006, 43, 5000018, 106, 5000006, 107, 182]
-const keyword_cds = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-const notice_idns = [97, 104, 135, 142, 144, 147, 152, 153, 12325, 35328, 36306, 36741, 44726, 44730]
+const payor_names = ['best', 'internal', 'test', 'ama', 'abc'];
+const keyword_idns = [7, 8, 38, 56, 57, 5000006, 43, 5000018, 106, 5000006, 107, 182];
+const keyword_cds = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+const notice_idns = [97, 104, 135, 142, 144, 147, 152, 153, 12325, 35328, 36306, 36741, 44726, 44730];
+const dummy_notice_idns = [12325, '-1', 35328, '-1', 36306, '-1', 36741, '-1', 44726, '-1', 44730];
+const template_master_idns = [10721, 10722, 10724, 10725, 10728, 10729, 10730, 10731, 10733, 10736];
+// const attach_pdf = [{'pdf_name': 'seladmin_54f2f0f718804982aaf93f6a7dd63b29', 'idn': 92}, {'pdf_name': 'seladmin_0d99fa8458c44ce390fddca14f306b7e', 'idn': 93}]
 
 export const options = {
     stages: [
         { target: 20, duration: "30s" },
-        { target: 10, duration: "1m" },
+        { target: 10, duration: "2m" },
         { target: 0, duration: "0" },
     ],
 
@@ -81,8 +83,6 @@ export default (authToken) => {
         ]);
     });
 
-
-
     group('Template | Add or Modify', function () {
         http.batch([
             ["GET", `${LETTERS_URL}auto_template_data`, null, bearer_token],
@@ -128,7 +128,8 @@ export default (authToken) => {
                 isSelectAll: true,
                 isSelectAllPrv: true,
                 language_cd: "FRENCH",
-                letter_name: "Letter-Template",
+                letter_name: randomString(8),
+                notice_idn: randomItem(dummy_notice_idns),
                 mail_copy: "",
                 notification_content:
                     "%3C?xml%20version=%221.0%22?%3E%3Chtml%20xmlns=%22http://www.w3.org/1999/xhtml%22%3E%3Cbody%3E%3Cdiv%3E%3Cp%3EThis%20is%20Letter%20Template%3C/p%3E%3C/div%3E%3C/body%3E%3C/html%3E",
@@ -155,8 +156,8 @@ export default (authToken) => {
                 prv_fax_type: 24,
                 sent_to: ["Patient", "Payor", "Contact", "Provider", "Group", "PCP"],
                 state_cd: "AK",
-                template_master_idn: 26765,
-                template_type: "EMMI_LETTER",
+                template_master_idn: randomItem(template_master_idns),
+                template_type: randomItem(letter_types),
             }), , bearer_token],
         ]);
     });
@@ -175,7 +176,7 @@ export default (authToken) => {
         http.batch([
             ["POST", `${LETTERS_URL}attach_pdf_list`,
                 JSON.stringify({
-                    noticeIdn: 44732,
+                    noticeIdn: randomItem(notice_idns),
                     pdfAttachedList: [
                         {
                             DOC_NAME: "seladmin_aa48930337c2481d8688cb3c97a97526",
@@ -185,11 +186,19 @@ export default (authToken) => {
                             DOC_NAME: "zeadmin_495fd6c2e6504c19a8b99fea38735897",
                             EDU_MATERIAL_IDN: 1194,
                         },
+                        {
+                            DOC_NAME: "seladmin_54f2f0f718804982aaf93f6a7dd63b29",
+                            EDU_MATERIAL_IDN: 92,
+                        },
+                        {
+                            DOC_NAME: "seladmin_0d99fa8458c44ce390fddca14f306b7e",
+                            EDU_MATERIAL_IDN: 93,
+                        },
                     ],
                 }), , bearer_token],
             ["GET", `${LETTERS_URL}get_attched_pdfs?noticeIdn=${randomItem(notice_idns)}`, null, bearer_token],
             ["GET", `${LETTERS_URL}get_pdf_list?noticeIdn=${randomItem(notice_idns)}&currentPage=${randomIntBetween(1, 5)}`, null, bearer_token],
-            ["GET", `${LETTERS_URL}remove_attached_pdf?attachmentIdns=713&attachmentIdns=714&attachmentIdns=714&noticeIdn=${randomItem(notice_idns)}`, null, bearer_token],
+            ["GET", `${LETTERS_URL}remove_attached_pdf?attachmentIdns=1164&attachmentIdns=1194&attachmentIdns=92&attachmentIdns=93&noticeIdn=${randomItem(notice_idns)}`, null, bearer_token],
         ]);
     });
 
