@@ -5,7 +5,7 @@ import { check, fail } from "k6";
 import http from "k6/http";
 
 const HOST_NAME = "localhost:1132";
-const BASE_URL = `http://${HOST_NAME}/`;
+const BASE_URL = `http://${HOST_NAME}`;
 const USER_NAME = "zeadmin";
 const PASSWORD = "Jiva@123";
 
