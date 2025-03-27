@@ -1,0 +1,40 @@
+Test Results
+-----------
+We have completed testing Autolance, based on our test results, we can confirm that all the functionalities related to Autolance are working as expected.
+
+Additional Observation
+--------------------
+During our testing, we found a serious problem with memory usage:
+- Memory Overconsumption: Some Zope nodes occasionally consumed 5 to 7 GB of memory, even though the Autolance memory limit is set to 750 MB
+- Impact: When this occurs, server memory utilization hits 100%
+- Consequence: Other Zope nodes on the same server begin to stop with memory errors
+
+Configuration to tackle this issue
+---------------------------------
+To address these memory over-consumption issue, we recommend adjusting two Autolance configurations:
+
+1. interval:
+   - Purpose: Controls how frequently Autolance checks Zope nodes' memory consumption
+   - Current default: 360 seconds (6 minutes)
+   - Recommended value: Less than 30 seconds
+   - Rationale: In performance testing we found that Zope nodes' memory consumption is reaching more than 2 GB within the current 6-minute window. More frequent checks will enable Autolance to restart nodes before memory issues occur.
+
+2. hard_restart_after:
+   - Purpose: Determines the maximum wait time before forcing a node restart
+   - Current default: 0 (zero) - waits indefinitely for pending tasks to complete
+   - Recommended value: Less than 60 seconds
+   - Behavior:
+     * Value = 0: Graceful restart, waits for all pending tasks to complete
+     * Value > 0: Forces restart after specified duration
+   - Rationale: The current default value allows nodes to run indefinitely while consuming excessive memory. Setting a specific timeout ensures regular memory cleanup.
+
+Future Planned Features
+----------------------
+1. Maximum Memory Cap:
+   - New configuration to set absolute memory consumption limits
+   - Will trigger immediate node restart when memory threshold is exceeded
+   - Autolance will immediately restart the node regardless of whether the node is having any pending requests or it is idle
+
+2. Node Health Check:
+   - It will help to detect and restart the inactive or unresponsive ("zombie") nodes
+
