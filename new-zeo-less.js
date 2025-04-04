@@ -2,21 +2,30 @@
 import { sleep, group } from "k6";
 import { check, fail } from "k6";
 import http from "k6/http";
+import { randomItem, randomIntBetween, randomString } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
 
 const HOST_NAME = "local.zeomega.org";
 const BASE_URL = `https://${HOST_NAME}`;
 const USER_NAME = "zeadmin";
 const PASSWORD = "Jiva@123";
 
+const COUNTRY_CODE = ['11Aug_Country R', '465', 'CB-Test_AlleryT', 'CKCI', 'Countries_TM', 'Country_11aug', 'Country_11aug11', 'CountryEdit', 'GrKFaP', 'TCD', 'USA'];
+const QUERY = ['hi', 'hello', 'test', 'simple', 'sample', 'sam', 'group', 'good', 'amazing', 'jiva', 'zeo', 'hmm'];
+const ACO_IDNS = [12410, 12411, 95, 12413, 12414, 12415, 12416, 12417, 12418, 12419, 12420, 12421, 12422, 12423, 12424, 15, 11722, 11719, 12407, 1198, 11723, 11717, 12241, 1491, 1492, 1493, 1494, 1495, 12442, 12443, 12444];
+const I_GROUP_IDNS = [19836, 84797, 116167, 116176, 116180, 208330, 142980, 84797, 85242, 19844, 19584, 9302, 9423, 4920, 4921, 5328, 5773, 6899, 8648, 8626, 8488, 8583, 7126, 8451, 5651, 4905, 5330, 101, 1670, 1107, 1599, 1809, 2789, 2790, 2791, 2792, 2793, 2794, 2795, 2796, 2797, 2799, 2800, 2948];
+const MBR_IDNS = [185941, 769571, 771026, 771026, 776994, 781394, 791258, 793801, 794460, 799357, 185876, 768209, 768211, 768611, 769748, 771641, 776743, 781807, 782125, 782126, 783754, 787429, 788888, 789266, 789295, 789713, 789714, 789716, 789721, 789722, 789723, 789725, 789726, 789730, 791261, 791920, 791969, 794328, 794457, 794461, 794570, 862539, 863283, 863309, 863320, 863960, 863967, 864265, 865373, 865374, 865383, 865384, 865385, 865386, 865389, 865396, 865397, 865400, 865401, 865405, 865700, 865767, 865884, 865885, 865886, 865887, 865888, 865889, 865890, 865893, 865894, 865895, 865913, 865915, 865916, 865917, 865990, 865992, 865994, 865997, 865999, 866004, 866006, 866007, 866033, 866041, 1046528, 1047290, 1047291];
+const CONTEXT_DROPDOWN = ['EpisodeIntake', 'FaxIntake', 'AddMemberSearch'];
+
+
 export const options = {
   // vus: 30,
-  stages: [
-    { target: 2, duration: "10m" },
-    { target: 20, duration: "1h" },
-    { target: 50, duration: "4h" },
-    { target: 2, duration: "30m" },
-    { target: 0, duration: "20m" },
-  ],
+  // stages: [
+  //   { target: 2, duration: "10m" },
+  //   { target: 20, duration: "1h" },
+  //   { target: 50, duration: "4h" },
+  //   { target: 2, duration: "30m" },
+  //   { target: 0, duration: "20m" },
+  // ],
 
   // thresholds: {
   //   http_req_failed: ["rate < 0.1"], // http errors should be less than 1%
@@ -1933,44 +1942,44 @@ export default function main(session) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Address/Controller/get_state_codes?country_cd=USA`
+        `${BASE_URL}/cms/ZeUI/Address/Controller/get_state_codes?country_cd=${randomItem(COUNTRY_CODE)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Address/Controller/get_state_codes?country_cd=TCD`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
-      res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getEthicityForAutoComplete?is_text=0&max_results=20&query=t`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/getEthicityForAutoComplete?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
 
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getRaceValuesForAutoComplete?is_text=0&max_results=20&query=s`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/getRaceValuesForAutoComplete?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getLanguagesValueForAutoComplete?is_text=0&max_results=20&query=e`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/getLanguagesValueForAutoComplete?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getCoverageDetailsGroup?is_text=0&max_results=10&query=sam&GROUP_ATTR_TYPE=group_name`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/getCoverageDetailsGroup?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}&GROUP_ATTR_TYPE=group_name`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/fillInsuranceType?I_GROUP_IDN=36788`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/getMemberACODetails?ACO_IDN=${randomItem(ACO_IDNS)}`
+      );
+      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
+        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
+      }
+      res = http.get(
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/fillInsuranceType?I_GROUP_IDN=${randomItem(I_GROUP_IDNS)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -1994,7 +2003,7 @@ export default function main(session) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getConfigForMemberSearchDropDown?context=AddMemberSearch`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/getConfigForMemberSearchDropDown?context=${randomItem(CONTEXT_DROPDOWN)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -2006,7 +2015,7 @@ export default function main(session) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getPCPDetailsForCoverage?I_PRV_NAME=tes&I_SEARCH_COUNT=10`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/getPCPDetailsForCoverage?I_PRV_NAME=${randomItem(QUERY)}&I_SEARCH_COUNT=${randomIntBetween(1, 10)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -2086,14 +2095,7 @@ export default function main(session) {
       }
 
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getConfigForMemberSearchDropDown?context=EpisodeIntake`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
-
-      res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/patientFirstName?query=hel`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/patientFirstName?query=${randomItem(QUERY)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -2101,7 +2103,7 @@ export default function main(session) {
 
       res = http.post(
         `${BASE_URL}/cms/ZeUI/Patient/Controller/episodeIntakeMbrSrc`,
-        '{"params":{"currentPage":1,"searchParam":{"I_FIRST_NAME":"hell"},"orderByField":"","orderBy":false,"context":"EpisodeIntake"}}',
+        `{"params":{"currentPage":1,"searchParam":{"I_FIRST_NAME":${randomItem(QUERY)}},"orderByField":"","orderBy":false,"context":"EpisodeIntake"}}`,
         {
           headers: {
             "x-xsrf-token": session["XSRF-TOKEN"],
@@ -2173,7 +2175,7 @@ export default function main(session) {
       }
 
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/get_member_name?mbr_idn=1096570`
+        `${BASE_URL}/cms/ZeUI/Patient/Controller/get_member_name?mbr_idn=${randomItem(MBR_IDNS)}`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -2219,21 +2221,7 @@ export default function main(session) {
       }
 
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getMemberDemographicsData?mbrIdn=1096570`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
-
-      res = http.get(
         `${BASE_URL}/cms/ZeUI/++resource++mbr/src/member/partials/member-abstract.html?v=${Date.now()}`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
-
-      res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getMPIData?i_claimant_idn=1096570`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -2523,12 +2511,6 @@ export default function main(session) {
     }
     res = http.get(
       `${BASE_URL}/cms/ZeUI/++resource++ce/src/fax/partials/fax-member-search.html?v=${Date.now()}`
-    );
-    if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-      fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-    }
-    res = http.get(
-      `${BASE_URL}/cms/ZeUI/Patient/Controller/getConfigForMemberSearchDropDown?context=FaxIntake`
     );
     if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
       fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -2876,31 +2858,14 @@ export default function main(session) {
       }
 
       res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getMPIData?i_claimant_idn=1545164`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
-      res = http.get(
         `${BASE_URL}/cms/ZeUI/Patient/Controller/getMemberInfoDetails?I_CLAIMANT_IDN=1545164`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
       }
-      res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getMPIData?i_claimant_idn=1545164`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
+
       res = http.get(
         `${BASE_URL}/cms/ZeUI/Patient/Controller/getMemberInfoDetails?I_CLAIMANT_IDN=1545164`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
-      res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/get_member_name?mbr_idn=1545164`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
@@ -2947,13 +2912,6 @@ export default function main(session) {
 
       res = http.get(
         `${BASE_URL}/cms/ZeUI/Patient/Controller/get_workflowbanner_config`
-      );
-      if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
-        fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
-      }
-
-      res = http.get(
-        `${BASE_URL}/cms/ZeUI/Patient/Controller/getMemberDemographicsData?mbrIdn=1545164`
       );
       if (!check(res, { "status code MUST be 200": (res) => res.status == 200 })) {
         fail(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
