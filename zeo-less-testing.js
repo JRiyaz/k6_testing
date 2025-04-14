@@ -12,11 +12,12 @@ const PASSWORD = "Jiva@123";
 export const options = {
   // vus: 30,
   stages: [
-    { target: 2, duration: "5m" },
-    { target: 20, duration: "10m" },
-    { target: 50, duration: "20m" },
-    { target: 0, duration: "15m" },
-  ],
+    { target: 2, duration: "10m" },
+    { target: 20, duration: "1h" },
+    { target: 50, duration: "4h" },
+    { target: 2, duration: "30m" },
+    { target: 0, duration: "20m" },
+ ],
 
   // thresholds: {
   //   http_req_failed: ["rate < 0.1"], // http errors should be less than 1%
