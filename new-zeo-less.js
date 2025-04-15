@@ -97,6 +97,7 @@ export default function main(session) {
     jar.set(BASE_URL, key, session[key]);
   }
   let res;
+  let mbr_value = randomItem(MBR_IDNS);
 
   group('page_1', function () {
     res = JIVA.get(
@@ -2220,6 +2221,555 @@ export default function main(session) {
     failChecker(res);
     res = JIVA.get(
       `/cms/++resource++contact/src/contact/js/services/contactServices.js?${getRandomNumber()}`,
+    );
+    failChecker(res);
+  });
+
+  group('page_17', function () {
+    res = JIVA.post(
+      `/cms/ZeUI/IPCensus/Controller/showCensusReport`,
+      '{"currentPage":1,"toggleFilter":"mypatients","orderByField":"name","orderby":false,"selectedFilters":[],"diagFilterDetails":{"diagnosis":"","fromAge":"","toAge":"","fromScore":"","toScore":"","diagIdn":"","toggleMemberStatus":""}}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/IPCensus/Controller/getLoggedInUserPcpList`,
+      null,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/IPCensus/Controller/getLoggedInUserAcoList`,
+      null,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/IPCensus/Controller/showCensusReport`,
+      '{"currentPage":1,"toggleFilter":"myphysicians","orderByField":"name","orderby":false,"selectedFilters":[],"diagFilterDetails":{"diagnosis":"","fromAge":"","toAge":"","fromScore":"","toScore":"","diagIdn":"","toggleMemberStatus":""}}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/IPCensus/Controller/showCensusReport`,
+      '{"currentPage":1,"toggleFilter":"myacos","orderByField":"name","orderby":false,"selectedFilters":[],"diagFilterDetails":{"diagnosis":"","fromAge":"","toAge":"","fromScore":"","toScore":"","diagIdn":"","toggleMemberStatus":""}}',
+    );
+    failChecker(res);
+
+    res = JIVA.get(`/cms/ZeUI/getpartialPerm`);
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/UDF/Controller/getSearchTitlePage`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/Assessment/Controller/assessmentTitle?query=${randomItem(QUERY)}&i_active_mode=udf`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getTitleResultsPageForUDF`,
+      `{"mod_type":"udf","ace_title":"","title_desc":"","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent","search":"Search"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getAddEditTitlePageForUDF`,
+      `{"title_desc":"","mod_type":"udf","I_CUR_PAGE":"1","I_CUR_PG":"${randomIntBetween(1, 10)}","ace_title_idn":"5227280","I_CONTEXT_ID":"modelwindowobj"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/UDF/Controller/getSearchQuestionPage`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getUDFSearchResultsPage`,
+      '{"mod_type":"udf","configure_assmnt":"","search_options":"less_options","search_qtxt":"","qstn_type":"","qstn_start_range":"","qstn_end_range":"","I_CUR_PAGE":"1","I_CONTEXT_ID":"mainContent","search":"Search"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/UDF/Controller/getSearchScreensPage`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getUDFResultPage`,
+      `{"mod_type":"udf","ace_title":"5285664","ace_status":"","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent","search":""}`,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/ZeUI/getManageAdminContentsFromXML_new_new`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Lookup/Controller/getReviewQuestionSearch`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/Lookup/Controller/views/getReviewTypeForEnc.xml`,
+      `{"i_enc_type_cd":"${randomItem(ENC_TYPES)}"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/Lookup/Controller/getReviewQuestionSearchResult`,
+      `{"tabID":"","I_ENC_TYPE_CD":"Appeal","I_REVIEW_TYPE":"","search":"search","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Lookup/Controller/get_xml_modularized_menu`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Lookup/Controller/getArchivalConfiguration`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+  });
+
+  group('page_18', function () {
+    res = JIVA.post(
+      `/cms/ZeUI/Lookup/Controller/getNewConfigCodeTables`,
+      null,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Lookup/Controller/getNewCodeTableConfig?I_TAB_IDN=125`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Lookup/Controller/getICDTypeDefaultPage`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_pdl_search_result?I_CUR_PAGE=${randomIntBetween(1, 10)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_drug_edit_values`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_ceg_details_for_pdl?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_therapeutic_classes?query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_medication_names?query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_ceg_details_for_pdl?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_pdl_search_result?I_CUR_PAGE=${randomIntBetween(1, 10)}&I_GROUP_IDN=36788`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Medispan/Controller/get_drug_history_details?DRUG_DETAIL_IDN=${randomItem(DRUG_DETAIL_IDNS)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/ZeUser/Controller/get_ssrs_admin_page`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/ZeUser/Controller/get_workspace_names?reportType=advancedReport`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Aco/Controller/getAcoResults?currentPage=${randomIntBetween(1, 10)}&orderBy=${randomItem(ORDER_BYS)}&orderByField=ACO_NAME`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Aco/Controller/getAcoViewDetails?I_ACO_IDN=${randomItem(I_ACO_IDNS)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(`/cms/ZeUI/Provider/Controller/getCountry`);
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Provider/Controller/getState`,
+      `{"countryCd":"${randomItem(COUNTRY_CODE)}"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/Controller/getManageCareplanPage`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/Assessment/Controller/getSearchTitlePage`,
+      '{"title_name":"Question Group/Assessment title","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/Assessment/Controller/assessmentTitle?query=${randomItem(QUERY)}&i_active_mode=ace`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getTitleResultsPage`,
+      `{"mod_type":"ace","ace_title":"","title_desc":"","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent","search":"Search"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/PlanOfCare/Controller/getSearchCtgyPage`,
+      '{"title_name":"Problem Category","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/PlanOfCare/Controller/getCtgyResultsPage`,
+      `{"ctgy_desc":"","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/Lookup/Controller/getProbViewPage`,
+      '{"title_name":"Problems","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+  });
+
+  group('page_19', function () {
+    res = JIVA.post(
+      `/cms/ZeUI/views/PlanOfCare/Controller/getProbSearchResultPage`,
+      `{"I_PROBLEM_TYPE":"","search":"search","tabID":"","title_name":"Problems","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Lookup/Controller/getCodeTableConfig`,
+      '{"I_CONTEXT_ID":"code_table_47","I_TAB_IDN":"47"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/Lookup/Controller/getGoalViewPage`,
+      '{"title_name":"Goals","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/PlanOfCare/Controller/getGoalSearchResultPage`,
+      `{"title_name":"Goals","I_GOAL_CLASS_NAME":"","I_GOAL_TYPE_NAME":"","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/Lookup/Controller/getBarrierViewPage`,
+      '{"title_name":"Strengths/Barriers","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Lookup/Controller/getCodeTableConfig`,
+      '{"I_CONTEXT_ID":"code_table_11","I_TAB_IDN":"11"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/PlanOfCare/Controller/getSearchCareplanPage`,
+      '{"title_name":"Care Plan Template","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.get(`/cms/PlanOfCare/Controller/pocGoals?query=${randomItem(QUERY)}`);
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/PlanOfCare/Controller/pocGoals?query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/PlanOfCare/Controller/pocIntervention?query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/PlanOfCare/Controller/pocProblems?query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/PlanOfCare/Controller/getCareplanResultsPage`,
+      `{"configure_assmnt":"","I_CONTEXT_ID":"mainContent","careplan_title":"","I_MASTER_PROB_IDN":"","I_MASTER_PROB":"","I_GOAL_CLASS_IDN":"","I_GOALS_CLASS":"","I_GOALS_CODE_IDN":"","I_BILLING_IDN":"","I_BILLING":"","I_CUR_PAGE":"${randomIntBetween(1, 10)}","search":"Search"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Assessment/Controller/getManageQuestionsHomePage`,
+      '{"I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Assessment/Assessment/Controller/getSearchAttributePage`,
+      '{"title_name":"Attributes","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getAttributeResultsPage`,
+      `{"I_QUE_ATTR_NAME":"","addQueAttr":"addQueAttr","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent","search":"search"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Assessment/Assessment/Controller/getSearchAttributeValuesPage`,
+      '{"title_name":"Attributes","I_CONTEXT_ID":"mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getAttributeValuesResultsPage`,
+      `{ "title_name": "Attribute Values", "I_TAG_DESC": "", "I_QUE_ATTR_VALUE": "", "I_QUE_ATTR_IDN": "", "I_CUR_PAGE": "${randomIntBetween(1, 10)}", "I_CONTEXT_ID": "mainContent", "search": "Search" }`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/Assessment/Assessment/Controller/getSearchQuestionPage`,
+      '{"title_name": "Question/Answer", "I_CONTEXT_ID": "mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/views/Assessment/Controller/getQuestionResultPage`,
+      `{"mod_type": "ace", "configure_assmnt": "", "search_options": "less_options", "search_qtxt": "", "qstn_type": "", "search_criteria": "All", "qstn_start_range": "", "qstn_end_range": "", "from_action": "search", "I_QUE_ATTR_IDN": "", "frm_name": "searchQuestion_ace", "I_CUR_PAGE": "${randomIntBetween(1, 10)}", "I_CONTEXT_ID": "mainContent", "search": "Search}`,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Payor/Controller/get_ceg_left_nav_links`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Payor/Controller/get_payor_name_autocomplete?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Payor/Controller/get_employer_name_autocomplete?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}&tpaIdn=`
+    );
+    failChecker(res);
+  });
+
+  group('page_20', function () {
+    res = JIVA.get(
+      `/cms/ZeUI/Payor/Controller/get_payor_name_autocomplete_for_employer?is_text=0&max_results=${randomIntBetween(1, 20)}&query=${randomItem(QUERY)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Payor/Controller/get_employer_details?currentPage=${randomIntBetween(1, 10)}&orderByField=name&sortBy=false&tpaIdn=0`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/PlanOfCare/Controller/getManageCareplanPage`,
+      '{"I_CONTEXT_ID": "mainContent"}',
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/WorkList/Controller/get_worklist_kafka`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/WorkList/Controller/get_worklist_search_fields`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_by_worklist_basic_search`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"","send_fields":${randomItem(ORDER_BYS)},"worklist_idn":0,"sys_user_type":"","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"","enc_selected_flag":false,"currDate":"04/09/2025"}`,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/WorkList/Controller/get_logged_in_user_worklists?USER_IDN=${randomItem(USER_IDNS)}`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_count_by_worklist`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"DUEDATEWIDGET","send_fields":${randomItem(ORDER_BYS)},"worklist_idn":0,"sys_user_type":"","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"Appeal","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"","enc_selected_flag":${randomItem(ORDER_BYS)},"currDate":"04/09/2025","search_flag":${randomItem(ORDER_BYS)}}`,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=81669&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_by_worklist_basic_search`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"","send_fields":${randomItem(ORDER_BYS)},"worklist_idn":12152,"sys_user_type":"USERWORKLIST","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"My Programs","enc_selected_flag":false,"currDate":"04/09/2025","search_flag":${randomItem(ORDER_BYS)},"total_episodes_count":10}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_count_by_worklist`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"mbr_last_name","send_fields":${randomItem(ORDER_BYS)},"worklist_idn":12152,"sys_user_type":"USERWORKLIST","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"BH-CM","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"My Programs","enc_selected_flag":${randomItem(ORDER_BYS)},"currDate":"04/09/2025","search_flag":${randomItem(ORDER_BYS)},"total_episodes_count":10}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_by_worklist_basic_search`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"","send_fields":${randomItem(ORDER_BYS)},"worklist_idn":12152,"sys_user_type":"USERWORKLIST","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"CM","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"My Programs","enc_selected_flag":${randomItem(ORDER_BYS)},"currDate":"04/09/2025","search_flag":${randomItem(ORDER_BYS)},"total_episodes_count":0}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_count_by_worklist`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"mbr_last_name","send_fields":false,"worklist_idn":12152,"sys_user_type":"USERWORKLIST","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"CM","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"My Programs","enc_selected_flag":${randomItem(ORDER_BYS)},"currDate":"04/09/2025","search_flag":${randomItem(ORDER_BYS)},"total_episodes_count":0}`,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}`
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_by_worklist_basic_search`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"","send_fields":${randomItem(ORDER_BYS)},"worklist_idn":0,"sys_user_type":"USERWORKLIST","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"","enc_selected_flag":${randomItem(ORDER_BYS)},"currDate":"04/09/2025","search_flag":${randomItem(ORDER_BYS)},"total_episodes_count":3}`,
+    );
+    failChecker(res);
+
+    res = JIVA.post(
+      `/cms/ZeUI/WorkList/Controller/get_episodes_count_by_worklist`,
+      `{"sort_by":${randomItem(ORDER_BYS)},"order_by":"DUEDATEWIDGET","send_fields":${randomItem(ORDER_BYS)},"worklist_idn":0,"sys_user_type":"USERWORKLIST","page_num":${randomIntBetween(1, 10)},"sel_enc_type":"Appeal","USER_IDN":0,"loggedin_user_idn":26127,"worklist_name":"","enc_selected_flag":${randomItem(ORDER_BYS)},"currDate":"04/09/2025","search_flag":${randomItem(ORDER_BYS)},"total_episodes_count":3}`,
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Episode/Controller/getAllowedEncTypeList`
+    );
+    failChecker(res);
+  });
+
+  group('page_21', function () {
+    res = JIVA.get(
+      `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=81669&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Episode/Controller/getEpisodeViewStatusDetails?I_CLAIMANT_IDN=${randomItem(MBR_IDNS)}&I_ENCOUNTER_IDN=1625103&I_ENCTYPE_CD=${randomItem(ENC_TYPES)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Patient/Controller/get_member_name?mbr_idn=${randomItem(MBR_IDNS)}`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/Patient/Controller/getAllReadOnlyMembers`
+    );
+    failChecker(res);
+
+    res = JIVA.get(
+      `/cms/ZeUI/UMService/Controller/get_pr_workflow_design_config`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/UMService/Controller/get_peer_to_peer_review_code_config`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/AppealEpisode/Controller/getAppealListingDetails?enc_idn=1625103&enc_type=Appeal&mbr_idn=${randomItem(MBR_IDNS)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/UMService/Controller/getDynamicNotesDetails?I_CLAIMANT_IDN=${randomItem(MBR_IDNS)}&I_ENCOUNTER_IDN=1625103`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Diagnosis/Controller/getConfigToDispStartDate`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Diagnosis/Controller/getDiagnosisData?encounter_idn=1625103&claimant_idn=${randomItem(MBR_IDNS)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Document/Controller/getEpisodeDocuments?claimant_idn=${randomItem(MBR_IDNS)}&encounter_idn=1625103&source=episode`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/AppealEpisode/Controller/get_attach_all_drugs_config`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/AppealEpisode/Controller/get_view_parent_link_doc_appeal_config`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/AppealEpisode/Controller/getAppealPendDecisions`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Episode/Controller/menuEpisodesList?I_CLAIMANT_IDN=${randomItem(MBR_IDNS)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Patient/Controller/get_workflowbanner_config`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Provider/Controller/getEncProvidersListing?encIdn=1625103&mbrIdn=${randomItem(MBR_IDNS)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Episode/Controller/getDynamicEncDetails?I_CLAIMANT_IDN=816697&I_ENC_IDN=1625103&encType=${randomItem(ENC_TYPES)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Patient/Controller/getConfigForMemberDemographics`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/AppealEpisode/Controller/fetchAppealButtonsConfig?encIdn=${randomItem(ENC_IDNS)}`
+    );
+    failChecker(res);
+    res = JIVA.get(
+      `/cms/ZeUI/Episode/Controller/prworkflow_version_nd_peer_to_peer_check?enc_type=${randomItem(ENC_TYPES)}`
     );
     failChecker(res);
   });
