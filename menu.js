@@ -23,6 +23,7 @@ const QUERY = ['hi', 'hello', 'test', 'simple', 'sample', 'sam', 'group', 'good'
 const ACO_IDNS = [12410, 12411, 95, 12413, 12414, 12415, 12416, 12417, 12418, 12419, 12420, 12421, 12422, 12423, 12424, 15, 11722, 11719, 12407, 1198, 11723, 11717, 12241, 1491, 1492, 1493, 1494, 1495, 12442, 12443, 12444];
 const I_GROUP_IDNS = [19836, 84797, 116167, 116176, 116180, 208330, 142980, 84797, 85242, 19844, 19584, 9302, 9423, 4920, 4921, 5328, 5773, 6899, 8648, 8626, 8488, 8583, 7126, 8451, 5651, 4905, 5330, 101, 1670, 1107, 1599, 1809, 2789, 2790, 2791, 2792, 2793, 2794, 2795, 2796, 2797, 2799, 2800, 2948];
 const MBR_IDNS = [185941, 769571, 771026, 771026, 776994, 781394, 791258, 793801, 794460, 799357, 185876, 768209, 768211, 768611, 769748, 771641, 776743, 781807, 782125, 782126, 783754, 787429, 788888, 789266, 789295, 789713, 789714, 789716, 789721, 789722, 789723, 789725, 789726, 789730, 791261, 791920, 791969, 794328, 794457, 794461, 794570, 862539, 863283, 863309, 863320, 863960, 863967, 864265, 865373, 865374, 865383, 865384, 865385, 865386, 865389, 865396, 865397, 865400, 865401, 865405, 865700, 865767, 865884, 865885, 865886, 865887, 865888, 865889, 865890, 865893, 865894, 865895, 865913, 865915, 865916, 865917, 865990, 865992, 865994, 865997, 865999, 866004, 866006, 866007, 866033, 866041, 1046528, 1047290, 1047291];
+const CLAIMANT_IDNS = [158442, 158449, 158452, 158461, 159950, 162058, 162288, 162387, 171235, 185941, 229750, 313915, 572658, 577142, 607454, 607456, 620853, 710571, 762264, 767008, 767037, 767520, 767521, 767522, 767523, 767524, 768211, 768214, 768220, 768222, 768592, 768599, 768604, 768610, 768615, 769285, 769333, 769337, 769373, 769402, 769409, 769501, 769596, 769896, 769897, 769898, 769899, 769900, 771393, 771422]
 const CONTEXT_DROPDOWN = ['EpisodeIntake', 'FaxIntake', 'AddMemberSearch', 'ManageMemberSearch', 'MemberMergeSearch'];
 const SEARCH_ALPHA = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 const YES_NO = ['Y', 'N'];
@@ -39,12 +40,14 @@ const ENC_IDNS = [20, 102, 112, 10216, 10225, 10229, 10240, 10284, 10287, 10315,
 
 const I_ACO_IDNS = [12413, 12414, 12415, 12416, 12417, 12418, 12419, 12420, 12421, 12422, 12423, 12424, 15, 11722, 11719, 12407, 1198, 11723, 11717, 12241, 1491, 1492, 1493, 1494, 1495, 12442, 12443, 12444, 12446, 12447, 12449, 12450, 12451, 12453, 12535, 12536, 12537, 12539, 12540, 12542, 12543, 12544, 12546, 12581, 12582, 12583, 12585, 12586, 12588, 12589, 12590, 12592, 12448, 95];
 
+const WIDGET_NAMES = ["LabDataExtended", "Procedures", "Notes", "MedicationAllergies", "ConsolidatedMedicationsList", "OtherAllergies", "DocumentsData", "AlertsData", "FunctionalAndCognitiveStatus", "AdvanceDirectives", "VitalSignsDirective", "Problems", "CareReminder", "AssessmentList", "ProblemList", "SocialDeterminants", "CareQualityGapsData", "HccCodesData"];
+
 function getRandomNumber() {
   return Date.now() + randomIntBetween(1, 999999);
 }
 
 function failChecker(res) {
-  if (!check(res, { "status code MUST be 200 or 201": (res) => res.status === 200 || res.status === 201 })) {
+  if (!check(res, { "status code MUST be 200 or 201 or 204": (res) => res.status === 200 || res.status === 201 || res.status === 204 })) {
     console.log(`status code was *not* 200: ${res.status}: URI: ${res.request.url}`);
   }
   sleep(0.5);
@@ -99,6 +102,7 @@ export default function main(session) {
     jar.set(BASE_URL, key, session[key]);
   }
   let res;
+  let mbr_value = randomItem(MBR_IDNS);
 
   res = JIVA.post(
     `/cms/ZeUI/IPCensus/Controller/showCensusReport`,
@@ -336,7 +340,7 @@ export default function main(session) {
 
   res = JIVA.post(
     `/cms/ZeUI/views/PlanOfCare/Controller/getProbSearchResultPage`,
-    '{"I_PROBLEM_TYPE":"","search":"search","tabID":"","title_name":"Problems","I_CUR_PAGE":"1","I_CONTEXT_ID":"mainContent"}',
+    `{"I_PROBLEM_TYPE":"","search":"search","tabID":"","title_name":"Problems","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent"}`,
   );
   failChecker(res);
 
@@ -354,7 +358,7 @@ export default function main(session) {
 
   res = JIVA.post(
     `/cms/ZeUI/views/PlanOfCare/Controller/getGoalSearchResultPage`,
-    '{"title_name":"Goals","I_GOAL_CLASS_NAME":"","I_GOAL_TYPE_NAME":"","I_CUR_PAGE":"1","I_CONTEXT_ID":"mainContent"}',
+    `{"title_name":"Goals","I_GOAL_CLASS_NAME":"","I_GOAL_TYPE_NAME":"","I_CUR_PAGE":"${randomIntBetween(1, 10)}","I_CONTEXT_ID":"mainContent"}`,
   );
   failChecker(res);
 
@@ -500,7 +504,7 @@ export default function main(session) {
   failChecker(res);
 
   res = JIVA.get(
-    `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=81669&mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=816697`
+    `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=81669&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}`
   );
   failChecker(res);
 
@@ -529,7 +533,7 @@ export default function main(session) {
   failChecker(res);
 
   res = JIVA.get(
-    `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=899416&mbr_list=1047351&mbr_list=896802&mbr_list=1047351&mbr_list=896802`
+    `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}`
   );
   failChecker(res);
 
@@ -551,12 +555,12 @@ export default function main(session) {
   failChecker(res);
 
   res = JIVA.get(
-    `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=81669&mbr_list=816697&mbr_list=816697&mbr_list=816697&mbr_list=816697`
+    `/cms/ZeUI/Patient/Controller/get_member_keyword_icons?mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=81669&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}&mbr_list=${mbr_value}`
   );
   failChecker(res);
 
   res = JIVA.get(
-    `/cms/ZeUI/Episode/Controller/getEpisodeViewStatusDetails?I_CLAIMANT_IDN=816697&I_ENCOUNTER_IDN=1625103&I_ENCTYPE_CD=Appeal`
+    `/cms/ZeUI/Episode/Controller/getEpisodeViewStatusDetails?I_CLAIMANT_IDN=${randomItem(MBR_IDNS)}&I_ENCOUNTER_IDN=1625103&I_ENCTYPE_CD=${randomItem(ENC_TYPES)}`
   );
   failChecker(res);
 
@@ -579,11 +583,11 @@ export default function main(session) {
   );
   failChecker(res);
   res = JIVA.get(
-    `/cms/ZeUI/AppealEpisode/Controller/getAppealListingDetails?enc_idn=1625103&enc_type=Appeal&mbr_idn=816697`
+    `/cms/ZeUI/AppealEpisode/Controller/getAppealListingDetails?enc_idn=1625103&enc_type=Appeal&mbr_idn=${randomItem(MBR_IDNS)}`
   );
   failChecker(res);
   res = JIVA.get(
-    `/cms/ZeUI/UMService/Controller/getDynamicNotesDetails?I_CLAIMANT_IDN=816697&I_ENCOUNTER_IDN=1625103`
+    `/cms/ZeUI/UMService/Controller/getDynamicNotesDetails?I_CLAIMANT_IDN=${randomItem(MBR_IDNS)}&I_ENCOUNTER_IDN=1625103`
   );
   failChecker(res);
   res = JIVA.get(
@@ -591,11 +595,11 @@ export default function main(session) {
   );
   failChecker(res);
   res = JIVA.get(
-    `/cms/ZeUI/Diagnosis/Controller/getDiagnosisData?encounter_idn=1625103&claimant_idn=816697`
+    `/cms/ZeUI/Diagnosis/Controller/getDiagnosisData?encounter_idn=1625103&claimant_idn=${randomItem(MBR_IDNS)}`
   );
   failChecker(res);
   res = JIVA.get(
-    `/cms/ZeUI/Document/Controller/getEpisodeDocuments?claimant_idn=816697&encounter_idn=1625103&source=episode`
+    `/cms/ZeUI/Document/Controller/getEpisodeDocuments?claimant_idn=${randomItem(MBR_IDNS)}&encounter_idn=1625103&source=episode`
   );
   failChecker(res);
   res = JIVA.get(
@@ -619,11 +623,11 @@ export default function main(session) {
   );
   failChecker(res);
   res = JIVA.get(
-    `/cms/ZeUI/Provider/Controller/getEncProvidersListing?encIdn=1625103&mbrIdn=816697`
+    `/cms/ZeUI/Provider/Controller/getEncProvidersListing?encIdn=1625103&mbrIdn=${randomItem(MBR_IDNS)}`
   );
   failChecker(res);
   res = JIVA.get(
-    `/cms/ZeUI/Episode/Controller/getDynamicEncDetails?I_CLAIMANT_IDN=816697&I_ENC_IDN=1625103&encType=Appeal`
+    `/cms/ZeUI/Episode/Controller/getDynamicEncDetails?I_CLAIMANT_IDN=816697&I_ENC_IDN=1625103&encType=${randomItem(ENC_TYPES)}`
   );
   failChecker(res);
   res = JIVA.get(
@@ -638,5 +642,4 @@ export default function main(session) {
     `/cms/ZeUI/Episode/Controller/prworkflow_version_nd_peer_to_peer_check?enc_type=${randomItem(ENC_TYPES)}`
   );
   failChecker(res);
-
 }
