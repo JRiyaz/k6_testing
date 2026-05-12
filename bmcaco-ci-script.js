@@ -21,7 +21,7 @@ JIVA.addHeaders({
   Connection: `keep-alive`,
 });
 
-const ITERATIONS = 1;
+const ITERATIONS = 50;
 export const options = {
   vus: ITERATIONS,
   iterations: ITERATIONS,
